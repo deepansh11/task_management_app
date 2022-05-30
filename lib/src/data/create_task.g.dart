@@ -14,6 +14,8 @@ CreateTaskData _$CreateTaskDataFromJson(Map<String, dynamic> json) =>
       json['wheelChair'] as bool?,
       json['scheduleDate'] as String?,
       json['priority'] as String?,
+      json['wheelChairType'] as String?,
+      json['specialInstructions'] as String?,
     );
 
 Map<String, dynamic> _$CreateTaskDataToJson(CreateTaskData instance) =>
@@ -24,6 +26,8 @@ Map<String, dynamic> _$CreateTaskDataToJson(CreateTaskData instance) =>
       'wheelChair': instance.wheelChair,
       'scheduleDate': instance.scheduleDate,
       'priority': instance.priority,
+      'wheelChairType': instance.wheelChairType,
+      'specialInstructions': instance.specialInstructions,
     };
 
 CreateTaskForFirebase _$CreateTaskForFirebaseFromJson(

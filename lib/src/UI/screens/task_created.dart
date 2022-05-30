@@ -21,11 +21,16 @@ class _TaskCardState extends ConsumerState<TaskCard> {
 
   late TextEditingController taskController;
 
+  late TextEditingController specialController;
+
   late List<String> list;
 
   late List<String> priorityTypes;
+  late List<String> wheelChairTypes;
 
   late String? priority;
+
+  late String? wheelChairType;
 
   late String? start;
 
@@ -42,6 +47,7 @@ class _TaskCardState extends ConsumerState<TaskCard> {
     // TODO: implement initState
     super.initState();
     taskController = TextEditingController();
+    specialController = TextEditingController();
 
     list = [
       'Reception',
@@ -55,9 +61,12 @@ class _TaskCardState extends ConsumerState<TaskCard> {
 
     priorityTypes = ['Urgent', 'Scheduled'];
 
+    wheelChairTypes = ['Type A', 'Type B', 'Type C', 'Type D'];
+
     start = null;
     end = null;
     priority = null;
+    wheelChairType = null;
 
     // startLocationController = TextEditingController();
 
@@ -78,6 +87,8 @@ class _TaskCardState extends ConsumerState<TaskCard> {
     bool wheelChair,
     String? date,
     String? priority,
+    String? wheelChairType,
+    String? specialInstructions,
   ) async {
     if (_formKey.currentState!.validate() != true) {
       return;
@@ -90,6 +101,8 @@ class _TaskCardState extends ConsumerState<TaskCard> {
       wheelChair,
       date,
       priority,
+      wheelChairType,
+      specialInstructions,
     );
 
     Future.microtask(() async {
@@ -110,6 +123,14 @@ class _TaskCardState extends ConsumerState<TaskCard> {
         );
       }
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    taskController.dispose();
+    specialController.dispose();
   }
 
   @override
@@ -195,14 +216,6 @@ class _TaskCardState extends ConsumerState<TaskCard> {
                       value: end,
                     ),
 
-                    // TextFormField(
-                    //   decoration: const InputDecoration(
-                    //     label: Text('Destination'),
-                    //   ),
-                    //   controller: destinationController,
-                    //   validator: (s) => _valiDator(taskController.text),
-                    // ),
-
                     DropdownButtonFormField<String>(
                       hint: const Text('Please select priority type'),
                       isExpanded: true,
@@ -220,6 +233,9 @@ class _TaskCardState extends ConsumerState<TaskCard> {
                       },
                       value: priority,
                     ),
+                    priority == 'Scheduled'
+                        ? const DatePicker()
+                        : const SizedBox(),
                     CheckboxListTile(
                       value: tick,
                       contentPadding: EdgeInsets.zero,
@@ -233,9 +249,31 @@ class _TaskCardState extends ConsumerState<TaskCard> {
                       title: const Text('Is wheelchair required?'),
                       controlAffinity: ListTileControlAffinity.leading,
                     ),
-                    priority == 'Scheduled'
-                        ? const DatePicker()
+                    tick
+                        ? DropdownButtonFormField<String>(
+                            hint: const Text('Wheelchair type'),
+                            isExpanded: true,
+                            items: wheelChairTypes
+                                .map((e) => DropdownMenuItem<String>(
+                                      child: Text(e),
+                                      value: e,
+                                    ))
+                                .toList(),
+                            onChanged: (s) {
+                              setState(() {
+                                wheelChairType = s.toString();
+                              });
+                            },
+                            value: wheelChairType,
+                          )
                         : const SizedBox(),
+
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        label: Text('Special Insctructions'),
+                      ),
+                      controller: specialController,
+                    ),
                     ElevatedButton(
                       onPressed: () {
                         _submitData(
@@ -247,6 +285,8 @@ class _TaskCardState extends ConsumerState<TaskCard> {
                           tick,
                           priority == 'Urgent' ? '-' : date,
                           priority,
+                          tick ? wheelChairType : '-',
+                          specialController.text,
                         );
                       },
                       child: const Text('Submit'),

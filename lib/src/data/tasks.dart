@@ -30,6 +30,8 @@ class TaskData {
   final String? turnAroundTime;
   final String? acceptTime;
   final String? declineTime;
+  final String? wheelChairType;
+  final String? specialInstructions;
 
   TaskData(
     this.taskName,
@@ -43,6 +45,8 @@ class TaskData {
     this.turnAroundTime,
     this.acceptTime,
     this.declineTime,
+    this.wheelChairType,
+    this.specialInstructions,
   );
 
   factory TaskData.fromJson(Map<String, dynamic> json) =>

@@ -1,12 +1,13 @@
 import 'package:mqtt_client/mqtt_client.dart';
-import 'package:mqtt_client/mqtt_server_client.dart';
+import 'package:mqtt_client/mqtt_browser_client.dart';
+import 'package:nanoid/async.dart';
 
 class FetchMqtt {
-  MqttServerClient client;
+  MqttBrowserClient client;
   FetchMqtt({
     required this.client,
   });
-  Future<MqttServerClient> connect() async {
+  Future<MqttBrowserClient> connect() async {
     client.logging(on: true);
 
     client.onConnected = onConnected;
@@ -16,15 +17,18 @@ class FetchMqtt {
     client.pongCallback = pong;
     client.keepAlivePeriod = 60;
     client.port = 1883;
+    client.websocketProtocols = ['ws'];
+
+    final id = await nanoid();
 
     final MqttConnectMessage connMessage = MqttConnectMessage()
-        .withClientIdentifier('mqttx_f2737ead')
         .authenticateAs('clevercare', 'sacC2p7rFaLj')
-        .withWillTopic('location_data')
-        .withWillMessage('hello')
+        .withClientIdentifier(id)
+        .withWillTopic('willTopic')
+        .withWillMessage('Hello')
         .startClean()
         .withWillQos(
-          MqttQos.atMostOnce,
+          MqttQos.atLeastOnce,
         );
 
     client.connectionMessage = connMessage;
@@ -40,7 +44,7 @@ class FetchMqtt {
   }
 
   Future<String> fetchLocationData() async {
-    client.subscribe('location_data', MqttQos.atMostOnce);
+    client.subscribe('zone_wise_location', MqttQos.atMostOnce);
     String payload = '';
 
     client.updates?.listen((List<MqttReceivedMessage<MqttMessage>> c) {

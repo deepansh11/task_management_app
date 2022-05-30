@@ -1,24 +1,29 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:dio/dio.dart';
-import 'package:nanoid/nanoid.dart';
 import 'package:sample_app/src/data/create_task.dart';
 import 'package:sample_app/src/data/tasks.dart';
 
 class DioClient {
   DioClient();
 
-  final Dio dio = Dio();
-  final _baseUrl = 'https://warm-eyrie-19537.herokuapp.com';
+  final Dio dio = Dio(
+    BaseOptions(
+      baseUrl: 'https://warm-eyrie-19537.herokuapp.com/',
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Origin,Content-Type",
+        "Access-Control-Allow-Methods": "GET,POST,HEAD,OPTIONS,PUT,DELETE"
+      },
+    ),
+  );
 
   Future<TaskResponse?> getTask() async {
     TaskResponse? data;
 
     try {
       Response taskData = await dio.get(
-        _baseUrl + '/task',
+        '/task',
       );
 
       final json = taskData.data;
@@ -31,23 +36,12 @@ class DioClient {
     return data;
   }
 
-  Future<void> getTasksFromNotif() async {
-    try {
-      final callable =
-          FirebaseFunctions.instance.httpsCallable('sendToTopic').call();
-      final results = await callable;
-      print(results.data);
-    } catch (e, s) {
-      print('$e $s');
-    }
-  }
-
   Future<bool> createTask({
     required CreateTaskData taskData,
   }) async {
     try {
       Response response = await dio.post(
-        _baseUrl + '/addTask',
+        '/addTask',
         data: taskData.toJson(),
       );
 

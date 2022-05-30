@@ -32,6 +32,8 @@ TaskData _$TaskDataFromJson(Map<String, dynamic> json) => TaskData(
       json['turnAroundTime'] as String?,
       json['acceptTime'] as String?,
       json['declineTime'] as String?,
+      json['wheelChairType'] as String?,
+      json['specialInstructions'] as String?,
     );
 
 Map<String, dynamic> _$TaskDataToJson(TaskData instance) => <String, dynamic>{
@@ -46,6 +48,8 @@ Map<String, dynamic> _$TaskDataToJson(TaskData instance) => <String, dynamic>{
       'turnAroundTime': instance.turnAroundTime,
       'acceptTime': instance.acceptTime,
       'declineTime': instance.declineTime,
+      'wheelChairType': instance.wheelChairType,
+      'specialInstructions': instance.specialInstructions,
     };
 
 TaskStatus _$TaskStatusFromJson(Map<String, dynamic> json) => TaskStatus(

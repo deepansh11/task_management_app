@@ -18,7 +18,12 @@ class WebReportCard extends StatelessWidget {
           DataColumn(
             label: Text('Is Wheelchair needed?'),
           ),
-          DataColumn(label: Text('Priority')),
+          DataColumn(
+            label: Text('WheelChair Type'),
+          ),
+          DataColumn(
+            label: Text('Priority'),
+          ),
           DataColumn(
             label: Text('Scheduled Date'),
           ),
@@ -30,6 +35,12 @@ class WebReportCard extends StatelessWidget {
           ),
           DataColumn(
             label: Text('Decline Time'),
+          ),
+          DataColumn(
+            label: Text('Special Instructions'),
+          ),
+          DataColumn(
+            label: Text('Live Location'),
           ),
           DataColumn(
             label: Text('Actions'),
@@ -44,12 +55,13 @@ class WebReportCard extends StatelessWidget {
             Color? color;
 
             if (e?.taskStatus?.taskId == 0) {
-              color = Colors.yellow;
+              color = Colors.yellow.shade600;
             } else if (e?.taskStatus?.taskId == 1) {
               color = Colors.green;
             } else {
               color = Colors.red;
             }
+
             return DataRow(
               cells: [
                 DataCell(
@@ -65,16 +77,25 @@ class WebReportCard extends StatelessWidget {
                   Text(e?.destination.toString() ?? '-'),
                 ),
                 DataCell(
-                  Text(
-                    e?.taskStatus?.taskStatus.toString() ?? '',
-                    style: TextStyle(
+                  Container(
+                    decoration: BoxDecoration(
                       color: color,
-                      fontWeight: FontWeight.bold,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: EdgeInsets.all(4),
+                    child: Text(
+                      e?.taskStatus?.taskStatus.toString() ?? '',
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
                 DataCell(
                   Text(yesNo),
+                ),
+                DataCell(
+                  Text(e?.wheelChairType ?? '-'),
                 ),
                 DataCell(
                   Text(e?.priority ?? '-'),
@@ -91,18 +112,27 @@ class WebReportCard extends StatelessWidget {
                 DataCell(
                   Text(e?.declineTime ?? '-'),
                 ),
-                DataCell(Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.delete),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.edit),
-                    )
-                  ],
-                )),
+                DataCell(
+                  Text(e?.specialInstructions ?? '-'),
+                ),
+                DataCell(ElevatedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.location_on),
+                    label: const Text('Live Location'))),
+                DataCell(
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.delete),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.edit),
+                      )
+                    ],
+                  ),
+                ),
               ],
             );
           },

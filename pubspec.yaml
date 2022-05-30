@@ -44,7 +44,8 @@ dependencies:
   cloud_firestore: ^3.1.16
 
   flutter_local_notifications: ^9.5.3+1
-  horizontal_data_table: ^3.6.5
+
+  sidebarx: ^0.4.0
 
   expandable: ^5.0.1
 

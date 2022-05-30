@@ -11,6 +11,9 @@ class CreateTaskData {
   final String? scheduleDate;
   final String? priority;
 
+  final String? wheelChairType;
+  final String? specialInstructions;
+
   CreateTaskData(
     this.taskName,
     this.startLocation,
@@ -18,6 +21,8 @@ class CreateTaskData {
     this.wheelChair,
     this.scheduleDate,
     this.priority,
+    this.wheelChairType,
+    this.specialInstructions,
   );
 
   factory CreateTaskData.fromJson(Map<String, dynamic> json) =>
