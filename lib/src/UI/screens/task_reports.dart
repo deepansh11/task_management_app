@@ -28,13 +28,18 @@ class _DataSubmittedState extends ConsumerState<DataSubmitted> {
     // TODO: implement initState
     super.initState();
     filterType = [
-      'Reception',
-      'Floor 1',
-      'Floor 2',
-      'Floor 3',
-      'Floor 4',
-      'Floor 5',
-      'Basement',
+      'Outside',
+      'Gate',
+      "Waiting Area",
+      "Public Lift",
+      "Patient Lift",
+      "Admission Hub Heritage",
+      "Report Collection",
+      "Public Lift-1",
+      "Patient Lift-1",
+      "Ortho",
+      'ECGReception',
+      'USG',
     ];
     filters = null;
 
@@ -92,8 +97,10 @@ class _DataSubmittedState extends ConsumerState<DataSubmitted> {
               ),
               const DataCards(
                 title: 'Floors',
-                data1: '7',
+                data1: '2',
                 subTitle1: 'No. of Floors',
+                data2: '10',
+                subTitle2: 'No. of wheel chairs',
               ),
               const DataCards(
                 title: 'Porters',
@@ -103,6 +110,8 @@ class _DataSubmittedState extends ConsumerState<DataSubmitted> {
                 subTitle2: 'On Task',
                 data3: '0',
                 subTitle3: 'On Break',
+                data4: '5',
+                subTitle4: 'Available Porters',
               )
             ],
           ),
@@ -157,22 +166,25 @@ class _DataSubmittedState extends ConsumerState<DataSubmitted> {
             ),
           ),
           list.when(data: (data) {
+            final isDataEmpty = data?.data?.isNotEmpty ?? false;
+
             return Expanded(
-                child: SingleChildScrollView(
-              controller: _scrollController1,
-              scrollDirection: Axis.vertical,
               child: SingleChildScrollView(
-                controller: _scrollController2,
-                scrollDirection: Axis.horizontal,
-                child: data != null
-                    ? WebReportCard(
-                        data: data,
-                      )
-                    : const Center(
-                        child: Text('No data to show'),
-                      ),
+                controller: _scrollController1,
+                scrollDirection: Axis.vertical,
+                child: SingleChildScrollView(
+                  controller: _scrollController2,
+                  scrollDirection: Axis.horizontal,
+                  child: data != null && isDataEmpty
+                      ? WebReportCard(
+                          data: data.data?.reversed.toList(),
+                        )
+                      : const Center(
+                          child: Text('No data to show'),
+                        ),
+                ),
               ),
-            ));
+            );
           }, error: (e, s) {
             print('Error: $e $s');
             return const Center(

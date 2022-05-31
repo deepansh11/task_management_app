@@ -50,13 +50,18 @@ class _TaskCardState extends ConsumerState<TaskCard> {
     specialController = TextEditingController();
 
     list = [
-      'Reception',
-      'Floor 1',
-      'Floor 2',
-      'Floor 3',
-      'Floor 4',
-      'Floor 5',
-      'Basement',
+      'Outside',
+      'Gate',
+      "Waiting Area",
+      "Public Lift",
+      "Patient Lift",
+      "Admission Hub Heritage",
+      "Report Collection",
+      "Public Lift-1",
+      "Patient Lift-1",
+      "Ortho",
+      'ECGReception',
+      'USG',
     ];
 
     priorityTypes = ['Urgent', 'Scheduled'];
@@ -78,6 +83,26 @@ class _TaskCardState extends ConsumerState<TaskCard> {
       return 'Please enter appropriate value';
     }
     return null;
+  }
+
+  void showLoaderDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(),
+          Container(
+              margin: const EdgeInsets.only(left: 7),
+              child: Text("Loading...")),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   void _submitData(
@@ -105,23 +130,25 @@ class _TaskCardState extends ConsumerState<TaskCard> {
       specialInstructions,
     );
 
+    showLoaderDialog(context);
     Future.microtask(() async {
       final watch = ref.watch(taskCreateProvider(payload).future);
-      final temp = await watch;
-
-      if (temp) {
+      watch.then((value) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Task Submitted Successfully'),
           ),
         );
-      } else {
+        Navigator.of(context).pop();
+      }, onError: (Object e, StackTrace s) {
+        print('Error: $e, $s');
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Please try again later'),
           ),
         );
-      }
+      });
     });
   }
 

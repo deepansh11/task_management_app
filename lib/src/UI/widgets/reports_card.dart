@@ -103,6 +103,7 @@ class ReportsCard extends StatelessWidget {
                         children: [
                           const TextSpan(text: 'Task Status: '),
                           TextSpan(
+                            
                             text: status?.taskStatus,
                             style: TextStyle(
                               color: color,

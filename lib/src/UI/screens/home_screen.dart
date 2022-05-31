@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:mqtt_client/mqtt_client.dart';
-import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:sample_app/src/UI/screens/mqtt_test.dart';
 import 'package:sample_app/src/UI/screens/settings_screen.dart';
 import 'package:sample_app/src/UI/screens/task_reports.dart';
 import 'package:sample_app/src/UI/screens/task_created.dart';
 import 'package:sample_app/src/UI/widgets/screen_switcher.dart';
-import 'package:sample_app/src/repo/provider.dart';
-import 'package:sample_app/src/repo/tasks.dart';
+
 import 'package:sample_app/src/utils/sidebar_theme.dart';
 import 'package:sidebarx/sidebarx.dart';
 

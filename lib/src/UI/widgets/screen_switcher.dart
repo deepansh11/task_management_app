@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sample_app/src/repo/tasks.dart';
 import 'package:sidebarx/sidebarx.dart';
 
-class ScreenSwitcher extends StatelessWidget {
+class ScreenSwitcher extends ConsumerWidget {
   const ScreenSwitcher(
       {Key? key, required this.controller, required this.pages})
       : super(key: key);
@@ -10,7 +12,7 @@ class ScreenSwitcher extends StatelessWidget {
   final List<Widget> pages;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     return AnimatedBuilder(
@@ -18,6 +20,7 @@ class ScreenSwitcher extends StatelessWidget {
         builder: (context, child) {
           switch (controller.selectedIndex) {
             case 0:
+              ref.refresh(taskFetchProvider);
               return pages[0];
             case 1:
               return pages[1];
